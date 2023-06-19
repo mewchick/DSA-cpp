@@ -1,96 +1,73 @@
 #include<iostream>
-#include<vector>
-#include<cmath>
 #include<algorithm>
+#include<vector>
 using namespace std;
 
-void SortWRTdifference(vector<int>&arr, int n, int k, int x) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (abs(arr[j]-x) > abs(arr[j + 1]-x)) {
-                swap(arr[j], arr[j+1]);
-            }
+int removeElement(vector<int>& nums, int val) {
+    sort(nums.begin(), nums.end());
+    int startIndex=-1;
+    int endIndex=-1;
+
+    //to find startIndex
+    int s1=0;
+    int e1=nums.size()-1;
+    while(s1<=e1){
+        int mid=s1+(e1-s1)/2;
+        if(nums[mid]==val){
+            startIndex=mid;
+            e1=mid-1;
         }
-        // cout<<"i="<<i<<" ";
-        // for(int i=0; i<n; i++){
-        //     cout<<arr[i]<<" ";
-        // }
-        // cout<<endl;
+        else if(nums[mid]>val){
+            e1=mid-1;
+        }
+        else{
+            s1=mid+1;
+        }
     }
-    
+
+    //to find endIndex
+    int s2=0;
+    int e2=nums.size()-1;
+    while(s2<=e2){
+        int mid=s2+(e2-s2)/2;
+        if(nums[mid]==val){
+            endIndex=mid;
+            s2=mid+1;
+        }
+        else if(nums[mid]>val){
+            e2=mid-1;
+        }
+        else{
+            s2=mid+1;
+        }
+    }
+    cout<<"start index="<<startIndex<<endl;
+    cout<<"end index="<<endIndex<<endl;
+
+    vector<int>temp;//copy of nums
+    for(int i=0; i<nums.size(); i++){
+        temp.push_back(nums[i]);
+    }
+
+    nums.clear();
+
+    for(int i=0; i<temp.size(); i++){
+        if(i<startIndex || i>endIndex){
+            nums.push_back(temp[i]);
+        }
+    }
+
+    cout<<"final nums= ";
+    for(int i=0; i<nums.size(); i++){
+        cout<<nums[i]<<" ";
+    }
+    cout<<endl;
+    return nums.size();
 }
 
 int main(){
-    vector<int>arr={1,2,3,4,5};
-    int k=4;
-    int x=-1;
-    int n=arr.size();
-  
-    SortWRTdifference(arr, n, k, x);
-    cout<<"array after being sorted wrt difference: "<<endl;
-    for(int i=0; i<n; i++){
-            cout<<arr[i]<<" ";
-    } 
-    cout<<endl;
-
-    cout<<"respective differences:"<<endl;
-    for(int i=0; i<n; i++){
-            cout<<abs(arr[i]-x)<<" ";
-    }
-    cout<<endl;
-
-    cout<<"extract required array"<<endl;
-    vector<int>ans;
-    for(int i=0; i<k; i++){
-        ans.push_back(arr[i]);
-    }
-    for(int i=0; i<k; i++){
-            cout<<ans[i]<<" ";
-    }
-    cout<<endl;
-
-    cout<<"sort extracted array:"<<endl;
-    sort(ans.begin(), ans.end()); 
-    for(int i=0; i<k; i++){
-            cout<<ans[i]<<" ";
-    }
-
-    // cout<<endl;
-    // sort(arr.begin(), arr.end());
-    // for(int i=0; i<n; i++){
-    //         cout<<arr[i]<<" ";
-    // }
-    // cout<<endl;
-    // cout<<"final ans:= ";
-    // for(int i=0; i<k; i++){
-    //         cout<<arr[i]<<" ";
-    // }
-    // cout<<endl;
-
-    //point number 2
-        // for(int i=0; i<arr.size()-1; i++){
-        //     if(abs(arr[i]-x)==abs(arr[i+1]-x)){
-        //         if(arr[i]>arr[i+1]){
-        //             swap(arr[i+1], arr[i]);
-        //         }   
-        //     }
-        // }
-        // for(int i=0; i<k; i++){
-        //     cout<<arr[i]<<" ";
-        // }
-        // cout<<endl;
-
-        //vector containing ans
-        // vector<int> ans;
-        // for(int i=0; i<k; i++){
-           
-        // }
-        // cout<<"finalest ans"<<endl;
-        // for(int i=0; i<k; i++){
-        //     cout<<arr[i]<<" ";
-        // }
-
-    
-
+    vector<int>nums={2,2,2};
+    int val=2;
+    cout<<"ans="<<removeElement(nums, val)<<endl;
 return 0;
 }
